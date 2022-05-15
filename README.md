@@ -22,6 +22,6 @@ Integrantes:
 Nome | RA
 --- | ---
 Pedro Marques Arena | N618AE4
-João Vitor | eeee
+João Vitor Fernandes de Lima| F314618
 
 ---
