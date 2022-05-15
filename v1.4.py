@@ -7,8 +7,6 @@ import wmi
 from subprocess import Popen
 
 
-#Popen('taskkill /F /IM chrome.exe', shell=True) isso mata o chrome no negocio de youtube fazer nova funcao pra isso
-
 #luz
 def on_message_lb(mosq, obj, msg):
     if msg.payload.decode()=="1":
@@ -31,15 +29,14 @@ def on_message_yt(mosq, obj,msg):
             print(linkhttps)
         else:
             pass
-            
+        
+    # printa o link do youtube e abre ou mata a task
     if msg.topic == "APS/youtube":
         if msg.payload.decode() == "1":
             print(linkhttps)
             webbrowser.open(linkhttps)
-
-
-
-
+        if msg.payload.decode() == "0":
+            Popen('taskkill /F /IM chrome.exe', shell=True)
 
 
 
