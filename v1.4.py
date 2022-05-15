@@ -1,25 +1,13 @@
-from webbrowser import Chrome
+import webbrowser
 import paho.mqtt.client as mqtt
 import paho.mqtt.publish as publish
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium_stealth import stealth
 from turtle import Screen
 import psutil
 import wmi
+from subprocess import Popen
 
-chrome_options = webdriver.ChromeOptions()
-chrome_options.headless = True
-driver = webdriver.Chrome(chrome_options=chrome_options)
 
-stealth(driver,
-    languages=["en-US", "en"],
-    vendor="Google Inc.",
-    platform="Win32",
-    webgl_vendor="Intel Inc.",
-    renderer="Intel Iris OpenGL Engine",
-    fix_hairline=True,
-    )
+#Popen('taskkill /F /IM chrome.exe', shell=True) isso mata o chrome no negocio de youtube fazer nova funcao pra isso
 
 #luz
 def on_message_lb(mosq, obj, msg):
@@ -35,22 +23,24 @@ def on_message_lb(mosq, obj, msg):
 
 #youtube
 def on_message_yt(mosq, obj,msg):
-    global link
-    link = msg.payload.decode()
+    global linkhttps
 
-    if link == "" or "1" or "0":
-        link= "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-        pass
-    if msg.payload.decode().startswith("https"):
-        link = msg.payload.decode()
-    else:
-        pass
-    if msg.payload.decode() == "1":
-        driver = webdriver.Chrome()
-        driver.get(link)
+    if msg.topic == "APS/youtubelink":
+        if msg.payload.decode().startswith("https"):
+            linkhttps = msg.payload.decode()
+            print(linkhttps)
+        else:
+            pass
+            
+    if msg.topic == "APS/youtube":
+        if msg.payload.decode() == "1":
+            print(linkhttps)
+            webbrowser.open(linkhttps)
 
-    else:
-        pass
+
+
+
+
 
 
 w = wmi.WMI(namespace="root\OpenHardwareMonitor")
@@ -86,6 +76,8 @@ def on_message_active_resources(mosq, obj,msg):
 mqtt = mqtt.Client()
 
 mqtt.message_callback_add('APS/youtube', on_message_yt)
+mqtt.message_callback_add('APS/youtubelink', on_message_yt)
+
 mqtt.message_callback_add('APS/lightBulb', on_message_lb)
 mqtt.message_callback_add('APS/resources', on_message_active_resources)
 # mqtt.on_message = on_message
