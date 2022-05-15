@@ -1,5 +1,5 @@
 <p align="center">
-<img alt="UNIP" width="200px" src="img/UNIP.png" />
+<img alt="UNIP" width="200px" src="https://logodownload.org/wp-content/uploads/2021/06/unip-logo.png" />
 </p>
 
 <h1 align="center">UNIP - Universidade Paulista</h1>
